@@ -1,25 +1,49 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [shifts, setShifts] = useState(Array(7).fill(Array(22).fill('')));
+
+  const handleShiftChange = (dayIndex, slotIndex, value) => {
+    const updatedShifts = [...shifts];
+    updatedShifts[dayIndex][slotIndex] = value;
+    setShifts(updatedShifts);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Shift Planning App</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Shift</th>
+          </tr>
+        </thead>
+        <tbody>
+          {shifts.map((shiftsByDay, dayIndex) => (
+            <tr key={dayIndex}>
+              <td>Day {dayIndex + 1}</td>
+              <td>
+                {shiftsByDay.map((shift, slotIndex) => (
+                  <input
+                    key={slotIndex}
+                    type="text"
+                    value={shift}
+                    onChange={(e) =>
+                      handleShiftChange(dayIndex, slotIndex, e.target.value)
+                    }
+                  />
+                ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
 export default App;
+
+
